@@ -32,7 +32,7 @@ Resources:
                 Caching: false
       Environment:
         Variables:
-          API_KEY: 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
+          API_KEY: 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
     Metadata:
       SamResourceId: ChatgptSearchWordFunction
 Outputs:

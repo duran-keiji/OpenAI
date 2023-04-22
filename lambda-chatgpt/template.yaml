@@ -35,7 +35,7 @@ Resources:
       Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
         # 新規追加
         Variables:
-          API_KEY: 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
+          API_KEY: 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
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function

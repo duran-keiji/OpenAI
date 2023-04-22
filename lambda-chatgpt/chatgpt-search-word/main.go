@@ -15,40 +15,40 @@ import (
 
 // -------------------------- リクエストの構造体 --------------------------
 type RequestBody struct {
-	Model    string    `json:"model"`   
-	Messages []Messages `json:"messages"`
+	RequestModel    string    `json:"model"`   
+	RequestMessages []RequestMessages `json:"messages"`
 }
 
-type Messages struct {
-	Role    string `json:"role"`   
-	Content string `json:"content"`
+type RequestMessages struct {
+	RequestRole    string `json:"role"`   
+	RequestContent string `json:"content"`
 }
 // ---------------------------------------------------------------------
 
 // -------------------------- レスポンスの構造体 --------------------------
 type Response struct {
-	ID      string   `json:"id"`     
-	Object  string   `json:"object"` 
-	Created int64    `json:"created"`
-	Choices []Choice `json:"choices"`
-	Usage   Usage    `json:"usage"`  
+	ResponseID      string   `json:"id"`     
+	ResponseObject  string   `json:"object"` 
+	ResponseCreated int64    `json:"created"`
+	ResponseChoices []ResponseChoices `json:"choices"`
+	ResponseUsage   ResponseUsage    `json:"usage"`  
 }
 
-type Choice struct {
-	Index        int64   `json:"index"`        
-	Message      Message `json:"message"`      
-	FinishReason string  `json:"finish_reason"`
+type ResponseChoices struct {
+	ResponseIndex        int64   `json:"index"`        
+	ResponseMessage      ResponseMessage `json:"message"`      
+	ResponseFinishReason string  `json:"finish_reason"`
 }
 
-type Message struct {
-	Role    string `json:"role"`   
-	Content string `json:"content"`
+type ResponseMessage struct {
+	ResponseRole    string `json:"role"`   
+	ResponseContent string `json:"content"`
 }
 
-type Usage struct {
-	PromptTokens     int64 `json:"prompt_tokens"`    
-	CompletionTokens int64 `json:"completion_tokens"`
-	TotalTokens      int64 `json:"total_tokens"`     
+type ResponseUsage struct {
+	ResponsePromptTokens     int64 `json:"prompt_tokens"`    
+	ResponseCompletionTokens int64 `json:"completion_tokens"`
+	ResponseTotalTokens      int64 `json:"total_tokens"`     
 }
 // ---------------------------------------------------------------------
 
@@ -59,11 +59,11 @@ func get_respons(request events.APIGatewayProxyRequest) (string) {
 
 	// リクエストパラメータ
 	requestBody := RequestBody{
-		Model: "gpt-3.5-turbo",
-		Messages: []Messages{
-			Messages{
-				Role: "user",
-				Content: searchQuery,
+		RequestModel: "gpt-3.5-turbo",
+		RequestMessages: []RequestMessages{
+			RequestMessages{
+				RequestRole: "user",
+				RequestContent: searchQuery,
 			},
 		},
 	}
@@ -100,8 +100,20 @@ func get_respons(request events.APIGatewayProxyRequest) (string) {
 	if err != nil {
 		panic(err)
 	}
+	fmt.Sprintf("body=", string(body))
 
-	return string(body)
+
+	var response Response
+	json.Unmarshal(body, &response)
+	fmt.Sprintf("response=", response)
+
+
+	message, err := json.Marshal(response.ResponseChoices[0].ResponseMessage.ResponseContent)
+	if err != nil {
+		panic(err)
+	}	
+
+	return string(message)
 }
 
 func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
