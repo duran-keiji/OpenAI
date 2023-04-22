@@ -10,11 +10,11 @@ Globals:
     Timeout: 60
     MemorySize: 128
 Resources:
-  HelloWorldFunction:
+  ChatgptSearchWordFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: HelloWorldFunction
-      Handler: hello-world
+      CodeUri: ChatgptSearchWordFunction
+      Handler: chatgpt-search-word
       Runtime: go1.x
       Architectures:
       - x86_64
@@ -24,7 +24,7 @@ Resources:
         CatchAll:
           Type: Api
           Properties:
-            Path: /hello
+            Path: /search/word
             Method: GET
             RequestParameters:
               method.request.path.q:
@@ -32,23 +32,23 @@ Resources:
                 Caching: false
       Environment:
         Variables:
-          API_KEY: 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
+          API_KEY: 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
     Metadata:
-      SamResourceId: HelloWorldFunction
+      SamResourceId: ChatgptSearchWordFunction
 Outputs:
-  HelloWorldAPI:
+  ChatgptSearchWordAPI:
     Description: API Gateway endpoint URL for Prod environment for First Function
     Value:
-      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/
-  HelloWorldFunction:
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/search/word/
+  ChatgptSearchWordFunction:
     Description: First Lambda Function ARN
     Value:
       Fn::GetAtt:
-      - HelloWorldFunction
+      - ChatgptSearchWordFunction
       - Arn
-  HelloWorldFunctionIamRole:
-    Description: Implicit IAM Role created for Hello World function
+  ChatgptSearchWordFunctionIamRole:
+    Description: Implicit IAM Role created for ChatgptSearchWordFunction
     Value:
       Fn::GetAtt:
-      - HelloWorldFunctionRole
+      - ChatgptSearchWordFunctionRole
       - Arn
