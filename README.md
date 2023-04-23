@@ -21,3 +21,7 @@
         "code": "invalid_api_key"
     }
 }
+
+# Appendix
+関数の作り方
+sam init --runtime go1.x --name my-function --app-template "hello-world"

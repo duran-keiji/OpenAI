@@ -10,6 +10,13 @@ Globals:
   Function:
     Timeout: 60
     MemorySize: 128
+  # # FIXME:↓ここを追加したらエラー発生
+  # Api:
+  #   Cors:
+  #     AllowOrigin: "'*'"
+  #     AllowCredentials: true
+  #     AllowMethods: "'POST'"
+  #     AllowHeaders: "'Content-Type,X-CSRF-TOKEN'"
 
 Resources:
   ChatgptSearchWordFunction:
@@ -35,7 +42,17 @@ Resources:
       Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
         # 新規追加
         Variables:
-          API_KEY: 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
+          API_KEY: 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
+  # FIXME:↓ここを追加したらエラー発生
+  # ChatgptSearchWordAPI:
+  #   Type: AWS::Serverless::Api
+  #   Properties:
+  #     StageName: 'Prod'
+  #     Cors:
+  #       AllowOrigin: "'*'" # TODO:環境によって許可範囲を設定 (ex.http://127.0.0.1:3000
+  #       AllowCredentials: true
+  #       AllowMethods: "'POST'"
+  #       AllowHeaders: "'Content-Type,X-CSRF-TOKEN'"
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function

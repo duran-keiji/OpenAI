@@ -120,9 +120,20 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 
 	respons := get_respons(request)
 
+	// ↓新規追加
+	headers := map[string]string{
+        "Content-Type":                    "application/json",
+        "Access-Control-Allow-Origin":     request.Headers["origin"], // こっちは小文字!
+        "Access-Control-Allow-Methods":    "OPTIONS,POST,GET",
+        "Access-Control-Allow-Headers":    "Origin,Authorization,Accept,X-Requested-With,Content-Type,X-CSRF-TOKEN",
+        "Access-Control-Allow-Credential": "true",
+    }
+
 	return events.APIGatewayProxyResponse{
 		Body:       fmt.Sprintf(string(respons)),
 		StatusCode: 200,
+		// ↓新規追加
+		Headers:	headers,
 	}, nil
 }
 
