@@ -26,20 +26,29 @@ Resources:
           Properties:
             Path: /search/word
             Method: GET
+            RestApiId:
+              Ref: OpenaiAppApi
             RequestParameters:
               method.request.path.q:
                 Required: true
                 Caching: false
       Environment:
         Variables:
-          API_KEY: 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
+          API_KEY: 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
     Metadata:
       SamResourceId: ChatgptSearchWordFunction
+  OpenaiAppApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: openai-app-api
+      StageName: dev
+      OpenApiVersion: 3.0.2
+      EndpointConfiguration: REGIONAL
 Outputs:
   ChatgptSearchWordAPI:
-    Description: API Gateway endpoint URL for Prod environment for First Function
+    Description: API Gateway endpoint URL for dev environment for First Function
     Value:
-      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/search/word/
+      Fn::Sub: https://${OpenaiAppApi}.execute-api.${AWS::Region}.amazonaws.com/dev/search/word/
   ChatgptSearchWordFunction:
     Description: First Lambda Function ARN
     Value:
@@ -52,3 +61,7 @@ Outputs:
       Fn::GetAtt:
       - ChatgptSearchWordFunctionRole
       - Arn
+  WebEndpoint:
+    Description: API Gateway endpoint URL for dev stage
+    Value:
+      Fn::Sub: https://${OpenaiAppApi}.execute-api.${AWS::Region}.amazonaws.com/dev

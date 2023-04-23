@@ -59,8 +59,11 @@ Outputs:
 ### リポジトリ ###
 ## Front ##
 # git clone https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/openai-app-front
+# git remote add origin https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/openai-app-front
+
 ## Back ##
 # git clone https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/openai-app-back
+# git remote add origin https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/openai-app-back
 
 ### git を利用する際のユーザ情報 ###
 # USER_NAME="keiji"

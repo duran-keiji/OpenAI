@@ -35,6 +35,8 @@ Resources:
           Properties:
             Path: /search/word
             Method: GET
+            RestApiId:    # 追加
+              Ref: OpenaiAppApi    # 追加
             RequestParameters: # 新規追加
               "method.request.path.q":
                 Required: true
@@ -42,7 +44,7 @@ Resources:
       Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
         # 新規追加
         Variables:
-          API_KEY: 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
+          API_KEY: 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
   # FIXME:↓ここを追加したらエラー発生
   # ChatgptSearchWordAPI:
   #   Type: AWS::Serverless::Api
@@ -54,16 +56,31 @@ Resources:
   #       AllowMethods: "'POST'"
   #       AllowHeaders: "'Content-Type,X-CSRF-TOKEN'"
 
+  # ↓ ----- 追加 ----- ↓
+  # --------------------
+  # API Gateway
+  # --------------------
+  OpenaiAppApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: "openai-app-api"
+      StageName: dev
+      OpenApiVersion: 3.0.2
+      EndpointConfiguration: REGIONAL
+
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
   # Find out more about other implicit resources you can reference within SAM
   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
   ChatgptSearchWordAPI:
-    Description: "API Gateway endpoint URL for Prod environment for First Function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/search/word/"
+    Description: "API Gateway endpoint URL for dev environment for First Function"
+    Value: !Sub "https://${OpenaiAppApi}.execute-api.${AWS::Region}.amazonaws.com/dev/search/word/"
   ChatgptSearchWordFunction:
     Description: "First Lambda Function ARN"
     Value: !GetAtt ChatgptSearchWordFunction.Arn
   ChatgptSearchWordFunctionIamRole:
     Description: "Implicit IAM Role created for ChatgptSearchWordFunction"
     Value: !GetAtt ChatgptSearchWordFunctionRole.Arn
+  WebEndpoint:
+    Description: "API Gateway endpoint URL for dev stage"    # 変更
+    Value: !Sub "https://${OpenaiAppApi}.execute-api.${AWS::Region}.amazonaws.com/dev"    # 変更
