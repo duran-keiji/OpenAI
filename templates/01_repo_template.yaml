@@ -68,3 +68,7 @@ Outputs:
 ### git を利用する際のユーザ情報 ###
 # USER_NAME="keiji"
 # USER_MAIL="system.developer.engineer@gmail.com"
+
+### CodeCommitの認証 ###
+# ユーザー名：admin-at-235359340466
+# パスワード：WFc2pKsfsCoDp6odZE4ay3VhjrlVRoAHFD8HSHLpuHc=
