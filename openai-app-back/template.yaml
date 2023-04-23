@@ -35,7 +35,7 @@ Resources:
                 Caching: false
       Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
         Variables:
-          API_KEY: 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
+          API_KEY: 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
 
   # --------------------
   # API Gateway

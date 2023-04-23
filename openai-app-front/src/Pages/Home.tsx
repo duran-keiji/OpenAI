@@ -1,43 +1,41 @@
 import React, { useEffect, useState } from 'react'
-import { API } from 'aws-amplify'
+// import { API } from 'aws-amplify'
+import { API_ENDPOINTS, getApi } from '../Api/endpoint';
 
-type SampleDataType = [
-  {
-    id: string;
-    name: string;
-  }
-];
-const initialSampleData = {id: "", name: ""};
 
 const Home: React.FC = () => {
-  const [sampleData, setSampleData] = useState<SampleDataType>([initialSampleData])
+  const [text, setText] = useState<string>("");
+  const [resultText, setResultText] = useState<string>("");
 
-  useEffect(() => {
-    getSampleData()
-  }, [])
 
-  const getSampleData = async () => {
+  const handleTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const text = event.target.value;
+    setText(text)
+  };
+
+
+  const chatgptSearchWord = async () => {
     try {
-      const API_NAME = 'OpenaiAppApi';
-      const PATH = '/search/word?q=APIとは';
-      const myInit = {};
-    
-      const data = await API.get(API_NAME, PATH, myInit);
-      setSampleData(data)
-    } catch (err) { console.log('error getting data') }
-  }
+      const query = "?q=" + text
+      const requestUrl = getApi(API_ENDPOINTS.chatgptSearchWord) + query
+      const response = await fetch(requestUrl);
+      const resultText = await response.json();
+      setResultText(resultText)
+      console.log(resultText);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <div className="App">
       <p>ようこそ！</p>
-      <p>登録データ一覧</p>
-      {
-        sampleData.map((data, index) => (
-          <div key={data.id ? data.id : index}>
-            <p>{data.name}</p>
-          </div>
-        ))
-      }
+      <p>chatGPT</p>
+      <div>
+        <input type="text" value={text} onChange={handleTextChange} />
+        <button onClick={chatgptSearchWord}>質問</button>
+        <p>{resultText}</p>
+      </div>
     </div>
   );
 }
