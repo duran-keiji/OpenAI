@@ -1,0 +1,67 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description:
+  CodeCommit Repository
+
+Parameters:
+  BackendRepoName:
+    Type: String
+    Default: "openai-app-back"
+  FrontendRepoName:
+    Type: String
+    Default: "openai-app-front"
+
+Resources:
+  BackendRepository:
+    Type: AWS::CodeCommit::Repository
+    Properties: 
+      RepositoryName: !Ref BackendRepoName
+  FrontendRepository:
+    Type: AWS::CodeCommit::Repository
+    Properties: 
+      RepositoryName: !Ref FrontendRepoName
+
+Outputs:
+  BackendHttpsUrl:
+    Description: The URL to use for cloning the repository over HTTPS.
+    Value: !GetAtt BackendRepository.CloneUrlHttp
+    Export:
+      Name: !Sub "${AWS::StackName}-Backend-HttpsUrl"
+  BackendSshUrl:
+    Description: The URL to use for cloning the repository over SSH.
+    Value: !GetAtt BackendRepository.CloneUrlSsh
+    Export:
+      Name: !Sub "${AWS::StackName}-Backend-SSHUrl"
+  FrontendHttpsUrl:
+    Description: The URL to use for cloning the repository over HTTPS.
+    Value: !GetAtt FrontendRepository.CloneUrlHttp
+    Export:
+      Name: !Sub "${AWS::StackName}-Frontend-HttpsUrl"
+  FrontendSshUrl:
+    Description: The URL to use for cloning the repository over SSH.
+    Value: !GetAtt FrontendRepository.CloneUrlSsh
+    Export:
+      Name: !Sub "${AWS::StackName}-Frontend-SSHUrl"
+
+### デプロイコマンド(以下すべてをコピペ) ###
+# TEMPLATE_NAME="01_repo_template.yaml"
+# REPO_STACK_NAME="openai-app-repo-stack"
+
+# BACKEND_REPO_NAME="openai-app-back"
+# FRONTEND_REPO_NAME="openai-app-front"
+
+# aws cloudformation deploy --template ./${TEMPLATE_NAME} \
+# --stack-name ${REPO_STACK_NAME} \
+# --parameter-overrides \
+#   BackendRepoName=${BACKEND_REPO_NAME} \
+#   FrontendRepoName=${FRONTEND_REPO_NAME}
+
+### リポジトリ ###
+## Front ##
+# git clone https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/openai-app-front
+## Back ##
+# git clone https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/openai-app-back
+
+### git を利用する際のユーザ情報 ###
+# USER_NAME="keiji"
+# USER_MAIL="system.developer.engineer@gmail.com"

@@ -1,7 +1,7 @@
 # OpenAI
 
 # ローカル環境の立ち上げ方
-①cd /Users/duran_keiji/develop/OpenAI/lambda-chatgpt
+①cd /Users/duran_keiji/develop/OpenAI/openai-app-back
 ②sam build
 ③sam local start-api
 ④別のタブを開く
@@ -11,7 +11,7 @@
 以下のエラーが出た場合は、
 ①https://platform.openai.com/account/api-keysにアクセス
 ②Create new secret keyを押下
-③/Users/duran_keiji/develop/OpenAI/lambda-chatgpt/template.yamlのAPI_KEYを最新のものに変更
+③/Users/duran_keiji/develop/OpenAI/openai-app-back/template.yamlのAPI_KEYを最新のものに変更
 
 {
     "error": {
@@ -24,4 +24,4 @@
 
 # Appendix
 関数の作り方
-sam init --runtime go1.x --name my-function --app-template "hello-world"
+sam init --runtime go1.x --name "openai-app-back" --app-template "hello-world"
