@@ -34,7 +34,7 @@ Resources:
                 Caching: false
       Environment:
         Variables:
-          API_KEY: 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
+          API_KEY: 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
     Metadata:
       SamResourceId: ChatgptSearchWordFunction
   OpenaiAppApi:
@@ -44,6 +44,11 @@ Resources:
       StageName: dev
       OpenApiVersion: 3.0.2
       EndpointConfiguration: REGIONAL
+      Cors:
+        AllowMethods: '''DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT'''
+        AllowHeaders: '''Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'''
+        AllowOrigin: '''*'''
+        MaxAge: '''86400'''
 Outputs:
   ChatgptSearchWordAPI:
     Description: API Gateway endpoint URL for dev environment for First Function
