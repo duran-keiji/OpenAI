@@ -9,8 +9,8 @@ function App() {
   return (
     <Authenticator signUpAttributes={['email']}>
       {({ signOut, user }) => (
-        <Home />
-      )}
+        <Home signOut={signOut!} user={user!} />
+        )}
     </Authenticator>
   );
 }

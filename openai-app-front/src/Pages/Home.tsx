@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { API, Auth } from 'aws-amplify'
+import { CognitoUserAmplify } from '@aws-amplify/ui';
+import '@aws-amplify/ui-react/styles.css';
 
-const Home: React.FC = () => {
+type HomeProps = {
+  signOut: VoidFunction;
+  user: CognitoUserAmplify;
+};
+
+const Home: React.FC<HomeProps> = (props) => {
   const [text, setText] = useState<string>("");
   const [resultText, setResultText] = useState<string>("");
 
@@ -33,12 +40,13 @@ const Home: React.FC = () => {
 
   return (
     <div className="App">
-      <p>ようこそ！</p>
+      <p>ようこそ、 {props.user.username} さん！</p>
       <p>chatGPT</p>
       <div>
         <input type="text" value={text} onChange={handleTextChange} />
         <button onClick={chatgptSearchWord}>質問</button>
         <p>{resultText}</p>
+        <button onClick={props.signOut}>Sign out</button>
       </div>
     </div>
   );
