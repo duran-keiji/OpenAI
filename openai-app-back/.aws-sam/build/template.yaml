@@ -34,7 +34,7 @@ Resources:
                 Caching: false
       Environment:
         Variables:
-          API_KEY: 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
+          API_KEY: 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
     Metadata:
       SamResourceId: ChatgptSearchWordFunction
   OpenaiAppApi:
@@ -49,6 +49,51 @@ Resources:
         AllowHeaders: '''Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'''
         AllowOrigin: '''*'''
         MaxAge: '''86400'''
+      Auth:
+        DefaultAuthorizer: AdminCognitoAuth
+        AddDefaultAuthorizerToCorsPreflight: false
+        Authorizers:
+          AdminCognitoAuth:
+            UserPoolArn:
+              Fn::GetAtt:
+              - AdminUserPool
+              - Arn
+  AdminUserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      UserPoolName: openai-app-userpool
+      Schema:
+      - Name: email
+        AttributeDataType: String
+        Mutable: true
+        Required: true
+      AutoVerifiedAttributes:
+      - email
+      UsernameConfiguration:
+        CaseSensitive: false
+      AccountRecoverySetting:
+        RecoveryMechanisms:
+        - Name: verified_email
+          Priority: 1
+      DeviceConfiguration:
+        DeviceOnlyRememberedOnUserPrompt: true
+  AdminUserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      UserPoolId:
+        Ref: AdminUserPool
+      ClientName: openai-app-userpoolclient
+      ExplicitAuthFlows:
+      - ALLOW_ADMIN_USER_PASSWORD_AUTH
+      - ALLOW_CUSTOM_AUTH
+      - ALLOW_USER_SRP_AUTH
+      - ALLOW_REFRESH_TOKEN_AUTH
+      PreventUserExistenceErrors: ENABLED
+      ReadAttributes:
+      - email
+      - email_verified
+      WriteAttributes:
+      - email
 Outputs:
   ChatgptSearchWordAPI:
     Description: API Gateway endpoint URL for dev environment for First Function

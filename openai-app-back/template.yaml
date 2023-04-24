@@ -35,7 +35,7 @@ Resources:
                 Caching: false
       Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
         Variables:
-          API_KEY: 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
+          API_KEY: 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
 
   # --------------------
   # API Gateway
@@ -52,6 +52,57 @@ Resources:
         AllowHeaders: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
         AllowOrigin: "'*'"
         MaxAge: "'86400'"
+# ----- 追加↓
+      Auth:
+        DefaultAuthorizer: AdminCognitoAuth
+        AddDefaultAuthorizerToCorsPreflight: false
+        Authorizers:
+          AdminCognitoAuth:
+            UserPoolArn: !GetAtt AdminUserPool.Arn
+
+  # --------------------
+  # Cognito
+  # --------------------
+  # UserPool
+  AdminUserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      UserPoolName: "openai-app-userpool"
+      Schema:
+      -
+        Name: email
+        AttributeDataType: String
+        Mutable: true
+        Required: true
+      AutoVerifiedAttributes:
+        - email
+      UsernameConfiguration:
+          CaseSensitive: false
+      AccountRecoverySetting:
+        RecoveryMechanisms:
+        -
+          Name: verified_email
+          Priority: 1
+      DeviceConfiguration:
+        DeviceOnlyRememberedOnUserPrompt: true
+  # UserPoolClient
+  AdminUserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      UserPoolId: !Ref AdminUserPool
+      ClientName: "openai-app-userpoolclient"
+      ExplicitAuthFlows:
+        - ALLOW_ADMIN_USER_PASSWORD_AUTH
+        - ALLOW_CUSTOM_AUTH
+        - ALLOW_USER_SRP_AUTH
+        - ALLOW_REFRESH_TOKEN_AUTH
+      PreventUserExistenceErrors: ENABLED
+      ReadAttributes:
+        - email
+        - email_verified
+      WriteAttributes:
+        - email
+# ----- 追加↑
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function

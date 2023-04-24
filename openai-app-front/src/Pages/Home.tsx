@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { API } from 'aws-amplify'
+import { API, Auth } from 'aws-amplify'
 
 const Home: React.FC = () => {
   const [text, setText] = useState<string>("");
@@ -18,7 +18,11 @@ const Home: React.FC = () => {
 
         const apiName = 'MainApi';
         const path = '/search/word' + query;
-        const myInit = {};
+        const myInit = {
+          headers: { 
+            Authorization: `Bearer ${(await Auth.currentSession()).getIdToken().getJwtToken()}`,
+          },
+        };
       
         const resultText = await API.get(apiName, path, myInit);
         setResultText(resultText)
