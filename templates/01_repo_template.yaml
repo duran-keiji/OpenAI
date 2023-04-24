@@ -72,3 +72,18 @@ Outputs:
 ### CodeCommitの認証 ###
 # ユーザー名：admin-at-235359340466
 # パスワード：WFc2pKsfsCoDp6odZE4ay3VhjrlVRoAHFD8HSHLpuHc=
+
+### git command ###
+# git branch -m main → masterブランチをmainに変更
+# git add . → 変更内容を追加
+# git commit -m "first commit" → コミット
+# git push origin main → mainにプッシュ
+
+# front: cd /Users/duran_keiji/develop/OpenAI/openai-app-front
+# back: cd /Users/duran_keiji/develop/OpenAI/openai-app-back
+# git add .
+# git commit -m "xxxxxxxx"
+# git push origin main
+
+# git push origin main で 「fatal: unable to access」となる場合
+# → キーチェーンアクセス > git-codecommit.ap-northeast-1.amazonaws.com > アクセス制御 > git-credential-osxkeychain > マイナス > 変更内容を保存 > git push origin main > キーチェンアクセス「拒否」
