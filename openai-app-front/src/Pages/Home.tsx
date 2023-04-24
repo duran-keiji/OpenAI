@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react'
-// import { API } from 'aws-amplify'
-import { API_ENDPOINTS, getApi } from '../Api/endpoint';
-
+import { API } from 'aws-amplify'
 
 const Home: React.FC = () => {
   const [text, setText] = useState<string>("");
@@ -16,12 +14,14 @@ const Home: React.FC = () => {
 
   const chatgptSearchWord = async () => {
     try {
-      const query = "?q=" + text
-      const requestUrl = getApi(API_ENDPOINTS.chatgptSearchWord) + query
-      const response = await fetch(requestUrl);
-      const resultText = await response.json();
-      setResultText(resultText)
-      console.log(resultText);
+        const query = "?q=" + text
+
+        const apiName = 'MainApi';
+        const path = '/search/word' + query;
+        const myInit = {};
+      
+        const resultText = await API.get(apiName, path, myInit);
+        setResultText(resultText)
     } catch (error) {
       console.error(error);
     }

@@ -34,7 +34,7 @@ Resources:
                 Caching: false
       Environment:
         Variables:
-          API_KEY: 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
+          API_KEY: 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
     Metadata:
       SamResourceId: ChatgptSearchWordFunction
   OpenaiAppApi:
